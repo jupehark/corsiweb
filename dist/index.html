@@ -4,5 +4,26 @@
     <meta charset="utf-8">
   </head>
   <body>
-  <script type="text/javascript" src="bundle.min.js"></script></body>
+  <script type="text/javascript" src="bundle.min.js"></script>
+<form name="koiran tiedot" method="POST" data-netlify="true">
+  <p>
+    <label>Koiran Nimi: <input type="text" name="name" /></label>   
+  </p>
+  <p>
+    <label>Koiran lempiruoka: <input type="email" name="email" /></label>
+  </p>
+  <p>
+    <label>Koiran ammatti: <select name="role[]" multiple>
+      <option value="Johtaja">Johtaja</option>
+      <option value="Seuraava">Seuraaja</option>
+    </select></label>
+  </p>
+  <p>
+    <label>Message: <textarea name="message"></textarea></label>
+  </p>
+  <p>
+    <button type="submit">Send</button>
+  </p>
+</form>
+    </body>
 </html>
