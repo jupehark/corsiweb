@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+        .text{
+            width: 90%;
+            max-width: 2000px;
+            font-size: 2.0vW;
+        }
+
+        .test{
+            width: 100%;
+            max-width: 1600px;
+            min-width: 100px;
+            height: auto;
+        }
+
+    </style>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser.min.js"></script>
+  </head>
+  <body>
+      <div id="text" class="text">
+      <p>lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
+        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
+        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
+        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
+      </p>
+    </div><div id="test" class="test">
+    <script type="text/javascript">
+    //src="phaser-3.54.0/dist/phaser.min.js"
+class Scene1
+{
+    constructor()
+    {
+        ;
+    }
+
+    preload()
+    {
+        this.load.image('textTausta','assets/textBox.png');
+    }
+
+    create()
+    {
+        this.add.image(200,200,'textTausta');
+        this.add.image(200,400,'textTausta').setScale(0.5);
+        this.add.text(100,168,'test',{font: '64px Arial',fill: '#000000'});
+    }
+
+}
+
+let config = {
+type: Phaser.AUTO,
+backgroundColor: '#d3d3d3',
+scale: {
+    parent : 'test',
+    mode: Phaser.Scale.FIT,
+    width: 400,
+    height: 600,
+},
+scene: [  Scene1 ]
+};
+
+let game = new Phaser.Game(config);
+    </script></div>
+  </body>
+</html>
