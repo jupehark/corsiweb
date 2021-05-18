@@ -72,8 +72,8 @@ class Scene1
         if (nimi==0)this.summa--;
         this.summaText.setText('summa: '+this.summa);
         this.clickText.setText('Klikkejä: '+this.clicks);
-        document.getElementById("output").innerHTML=this.summa;
-        document.getElementById("salattu").innerHTML=this.clicks;
+        document.getElementById("output").value=this.summa;
+        document.getElementById("salattu").value=this.clicks;
     }
 
 }
