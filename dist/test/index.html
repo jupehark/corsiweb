@@ -14,12 +14,16 @@
             padding-right: 5%;
             width: 90%;
         }
-      
+
         .test{
-            width: 70%;
+            width: 100%;
             max-width: 1600px;
             min-width: 100px;
             height: auto;
+        }
+
+        .nappailyt{
+            display: none;
         }
 
     </style>
@@ -28,9 +32,6 @@
   <body>
       <div id="text" class="text">
       <p>lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
-        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
-        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
-        lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
       </p>
     <div id="grand" class="grand">
     </div><div id="test" class="test">
@@ -40,7 +41,10 @@ class Scene1
 {
     constructor()
     {
-        ;
+        this.summa=0;
+        this.clicks=0;
+        this.summaText;
+        this.clickText;
     }
 
     preload()
@@ -50,9 +54,26 @@ class Scene1
 
     create()
     {
-        this.add.image(200,200,'textTausta');
-        this.add.image(200,400,'textTausta').setScale(0.5);
-        this.add.text(100,168,'test',{font: '64px Arial',fill: '#000000'});
+        this.add.image(200,200,'textTausta').setInteractive().name=1;
+        this.add.image(200,400,'textTausta').setScale(0.5).setInteractive().name=0;
+        this.add.text(100,168,'++',{font: '64px Arial',fill: '#000000'});
+        this.add.text(150,380,'--',{font: '32px Arial',fill: '#000000'});
+        this.summaText=this.add.text(30,420,'summa: 0',{font: '64px Arial',fill: '#000000'});
+        this.clickText=this.add.text(30,500,'klikkejä: 0',{font: '64px Arial',fill: '#000000'});
+        
+        this.input.on('gameobjectup', this.clickHandler, this);
+    }
+
+    clickHandler(pointer,box)
+    {
+        let nimi=box.name;
+        this.clicks++;
+        if (nimi==1)this.summa++;
+        if (nimi==0)this.summa--;
+        this.summaText.setText('summa: '+this.summa);
+        this.clickText.setText('Klikkejä: '+this.clicks);
+        document.getElementById("output").innerHTML=this.summa;
+        document.getElementById("salattu").innerHTML=this.clicks;
     }
 
 }
@@ -63,7 +84,7 @@ backgroundColor: '#d3d3d3',
 scale: {
     parent : 'test',
     mode: Phaser.Scale.FIT,
-    width: 800,
+    width: 400,
     height: 600,
 },
 scene: [  Scene1 ]
@@ -71,5 +92,27 @@ scene: [  Scene1 ]
 
 let game = new Phaser.Game(config);
     </script></div></div>
+    <form name="testing basic" method="POST" data-netlify="true">
+        <p>
+            <label>Kerta: <input type="number" name="Kerta"/></label>
+        </p>
+        <p>
+            <label>Vastaajan tyyppi: <select name="role[]" multiple>
+                <option value="developer">Kehittäjä</option>            
+                <option value="tester">Testaaja</option>
+                <option value="victim">Uhri</option>
+        </select></label>
+    </p>
+        <label>Summa, näytössä: <input type="number" name="SummaScreen"></label>
+    </p>
+    <div id="output" name="summa"></div>
+    <p>
+        <label>klikkauksia, näytössä: <input type="number" name="ClicksScreen"></label>
+    </p>
+    <input id="salattu" name="clicks" type="hidden">
+  <p>
+    <button type="submit">Send</button>
+  </p>
+    </form>
   </body>
 </html>
