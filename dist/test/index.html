@@ -1,118 +1,507 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <style>
-        .text{
-            width: 90%;
-            max-width: 2000px;
-            font-size: 2.0vW;
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Spatial Span</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser.min.js"></script> 
+    <style type="text/css">
+        body {
+            margin: 0;
         }
-
-        .grand{
-            padding-left: 5%;
-            padding-right: 5%;
-            width: 90%;
-        }
-
-        .test{
-            width: 100%;
-            max-width: 1600px;
-            min-width: 100px;
-            height: auto;
-        }
-
-        .nappailyt{
-            display: none;
-        }
-
     </style>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.54.0/dist/phaser.min.js"></script>
-  </head>
-  <body>
-      <div id="text" class="text">
-      <p>lirum larum lorum sarum korum kesys kjfklj lkajlk mlk malkm lknmlkanmflknfljkfnoin okniouhijk nkjbniu hijbnijb iubakjfbciu kjmbeiuwbnkj bi jigi hbib a fekvnlkn ksln lknmlk nmlk mglkn woknmlk ,mnoka moklmn oklmokl maokl nlkn opknm oalkno kanokl nokrn olkanm,l mok mokam oihng okmoqjwah ono haiuo nojin iubnijo niun qokm ijhoiQN IJVNO FMONG IONOI NWEOKN MOANOOno inmojnowrnm on oakn oigamnm no nmoj noinioanmcn oieun oijwhango njoabnoijnweio hniawehv
-     </p>
-    <div id="grand" class="grand">
-    </div><div id="test" class="test">
-    <script type="text/javascript">
-    //src="phaser-3.54.0/dist/phaser.min.js"
-class Scene1
+</head>
+<body>
+
+<script type="text/javascript">
+/* src="phaser-3.54.0/dist/phaser.min.js">*/
+
+class Scene1 extends Phaser.Scene
 {
     constructor()
     {
-        this.summa=0;
-        this.clicks=0;
-        this.summaText;
-        this.clickText;
+        super('GameScene1');
+        this.selitysTeksti; //tekstikentta, joka antaa pelaajalle ohjeita
+        this.isLoading=false;//Estetaan numeroiden painaminen kun niiden nayttaminen on kesken
+        this.sarja;
+        this.muistettavaSarja=[];
+        this.kaanteinen=false;
+        this.timedEvent;
+        this.c=0;
+        this.pelaajanIndeksi=0;
+        this.kaikkiValittuOikein=true;
+        this.startButton;
+        this.nextButton;
+        this.harjoitteluButton;
+        this.harjoitteluButton2;
+        this.sarjanPituus=3;
+        this.peliAktiivininen=false;//estetaan pelaajaa valitsemasta numeroita kun peli on paattynyt
+        this.oikeinKuva;
+        this.vaarinKuva;
+        this.posX=[-340,200,335,470,200,335,470,200,335,470];
+        this.posY=[-340,230,230,230,365,365,365,500,500,500];
+        this.harjoittelu=false;
+        this.pisinSarja=3;
+        this.pelaajanElamat=3;
+        this.kuva;
     }
 
     preload()
     {
-        this.load.image('textTausta','assets/textBox.png');
+        this.load.image('white','assets/square.png');
+        this.load.image('startbutton','assets/startbutton.png');
+        this.load.image('nextbutton','assets/nextbutton.png');
+        this.load.image('wrong','assets/vaarin.png');
+        this.load.image('right','assets/oikein.png');
+        this.load.image('practice','assets/practice.png');
+        this.load.image('black','assets/white.png');
+        this.load.image('skip','assets/nextbutton.png');//remove
     }
 
     create()
     {
-        this.add.image(200,200,'textTausta').setInteractive().name=1;
-        this.add.image(200,400,'textTausta').setScale(0.5).setInteractive().name=0;
-        this.add.text(100,168,'++',{font: '64px Arial',fill: '#000000'});
-        this.add.text(150,380,'--',{font: '32px Arial',fill: '#000000'});
-        this.summaText=this.add.text(30,420,'summa: 0',{font: '64px Arial',fill: '#000000'});
-        this.clickText=this.add.text(30,500,'klikkejä: 0',{font: '64px Arial',fill: '#000000'});
+        this.selitysTeksti=this.add.text(130,10,'Aloita harjoitus painamalla harjoittele-nappia.',{font: '24px Arial',fill: '#000000'});
+        this.add.text(700,10,'Sarjan\npituus',{font: '24px Arial',fill: '#000000'});
+        this.add.image(730,90,'white').setScale(0.7);
+        this.sarjanPituusText=this.add.text(720,70,'2',{font: '32px Arial',fill: '#000000'});
+        this.add.image(700,500,'skip').setScale(0.5).setInteractive().name=1337;//remove
+
+
+        this.add.image(this.posX[1],this.posY[1],'white').setScale(2).setInteractive().name=1;
+        this.add.image(this.posX[2],this.posY[2],'white').setScale(2).setInteractive().name=2;
+        this.add.image(this.posX[3],this.posY[3],'white').setScale(2).setInteractive().name=3;
+        this.add.image(this.posX[4],this.posY[4],'white').setScale(2).setInteractive().name=4;
+        this.add.image(this.posX[5],this.posY[5],'white').setScale(2).setInteractive().name=5;
+        this.add.image(this.posX[6],this.posY[6],'white').setScale(2).setInteractive().name=6;
+        this.add.image(this.posX[7],this.posY[7],'white').setScale(2).setInteractive().name=7;
+        this.add.image(this.posX[8],this.posY[8],'white').setScale(2).setInteractive().name=8;
+        this.add.image(this.posX[9],this.posY[9],'white').setScale(2).setInteractive().name=9;
+
+        this.kuva=this.add.image(-340,340,'black').setScale(0.6);
+        this.kuva.setTint(0x000000);
         
-        this.input.on('gameobjectup', this.clickHandler, this);
+        this.oikeinKuva=this.add.image(-340,-340,'right');
+        this.vaarinKuva=this.add.image(-340,-340,'wrong');
+
+        this.startButton=this.add.image(-340,-340,'startbutton').setScale(1.8).setInteractive();
+        this.startButton.name=77;
+        
+        this.nextButton=this.add.image(-340,-340,'nextbutton').setScale(1.8).setInteractive();
+        this.nextButton.name=99;
+        
+        this.harjoitteluButton=this.add.image(this.posX[5],this.posY[5],'practice').setScale(1.8).setInteractive();
+        this.harjoitteluButton.name=111;
+		
+        this.harjoitteluButton2=this.add.image(-340,-340,'practice').setScale(1.8).setInteractive();
+        this.harjoitteluButton2.name=112;
+
+        this.input.on('gameobjectup',this.clickHandler,this);
+        this.cameras.main.fadeIn(1000,20,20,20);
+        
+        this.kaanteinen=this.registry.get('kaanna');
     }
 
-    clickHandler(pointer,box)
+    clickHandler(pointer, box)
+    {
+        if (box.name==1337)//remove
+        {
+            if(this.kaanteinen==false)this.registry.set('pisinSpan',this.pisinSarja);
+            if(this.kaanteinen==true)this.registry.set('pisinBackwards',this.pisinSarja);
+            if (this.kaanteinen==true)this.scene.start('LoppuScene');
+            else this.scene.start('siirtymaScene');
+        }
+        if (box.name==111)this.harjoittelu=true;
+        if (this.harjoittelu==true)this.clickHandlerPractice(pointer,box);
+        else this.clickHandlerReal(pointer,box);
+    }
+
+    vaiheTransitio()
+    {
+        this.peliAktiivininen=false;
+        this.cameras.main.fadeOut(1000,0,230,200);
+        this.time.delayedCall(2000,()=>{
+            this.selitysTeksti.setText('Muista sarja.');
+            this.kaikkiValittuOikein=true;
+            this.oikeinKuva.setPosition(-340,-340);
+            this.vaarinKuva.setPosition(-340,-340);
+            this.sarja=this.generateSpan(this.sarjanPituus);
+            this.startButton.setPosition(-340,-340);
+            this.nextButton.setPosition(-340,-340);
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#000000' });
+            this.cameras.main.fadeIn(1000,0,230,200);
+        })
+        this.time.delayedCall(3000,()=>{
+            this.peliAktiivininen=true;
+            this.showSignal2();
+        });
+    }
+	
+    //varsinaisen testin kasittely
+    clickHandlerReal(pointer,box)
     {
         let nimi=box.name;
-        this.clicks++;
-        if (nimi==1)this.summa++;
-        if (nimi==0)this.summa--;
-        this.summaText.setText('summa: '+this.summa);
-        this.clickText.setText('Klikkejä: '+this.clicks);
-        document.getElementById("output").value=this.summa;
-        document.getElementById("salattu").value=this.clicks;
+        if (nimi==77)
+        {
+            this.c=0;
+            this.pelaajanElamat=3;
+            this.pelaajanIndeksi=0;
+            this.registry.set('vaihe',this.registry.get('vaihe')+1);
+            this.vaiheTransitio();
+            return;
+        }
+        if (nimi==99) //painettu start tai seuraava
+        {
+            this.c=0;
+            this.pelaajanIndeksi=0;
+            this.sarja=this.generateSpan(this.sarjanPituus);
+            this.startButton.setPosition(-340,-340);
+            this.nextButton.setPosition(-340,-340);
+            this.selitysTeksti.setText('Muista sarja.');
+            this.kaikkiValittuOikein=true;
+            this.peliAktiivininen=true;
+            this.oikeinKuva.setPosition(-340,-340);
+            this.vaarinKuva.setPosition(-340,-340);
+            this.showSignal2();
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#000000' });
+            return;
+        }
+        
+        if (this.peliAktiivininen==false)return;//jos kierros on kesken estetaan numeroiden valitsemeninen
+        if (this.isLoading==true)return; //jos numeroiden nayttaminen viela kesken palataan takaisin
+
+
+        if (this.muistettavaSarja[this.pelaajanIndeksi]==nimi)
+        {
+            this.oikeinKuva.setPosition(this.posX[nimi],this.posY[nimi]);
+            this.vaarinKuva.setPosition(-340,-340);
+        }
+        else
+        {
+            this.kaikkiValittuOikein=false;
+            this.pelaajanElamat--;
+            this.sarjanPituus--;
+            this.sarjanPituusText.setText(this.sarjanPituus);
+            this.peliAktiivininen=false;
+            if (this.pelaajanElamat>0)this.nextButton.setPosition(this.posX[5],this.posY[5]);
+            this.vaarinKuva.setPosition(this.posX[nimi],this.posY[nimi]);
+            this.oikeinKuva.setPosition(-340,-340);
+            this.selitysTeksti.setText('Ops! Painoit väärää ruutua.');
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#FF0000' });
+            if (this.pelaajanElamat==0)
+            {
+                this.cameras.main.fadeOut(1000,20,20,20);
+                if (this.kaanteinen==false)this.registry.set('pisinSpan',this.pisinSarja);
+                if (this.kaanteinen==true)this.registry.set('pisinBackwards',this.pisinSarja);
+                if (this.kaanteinen==true)this.time.delayedCall(1000,()=>{
+                this.scene.start('LoppuScene');});
+                else this.time.delayedCall(1000,()=>{
+                this.scene.start('siirtymaScene');});
+            }
+        }
+        this.pelaajanIndeksi++;
+        if (this.kaikkiValittuOikein==true && this.pelaajanIndeksi==this.sarjanPituus)
+        {
+            if (this.sarjanPituus>this.pisinSarja)this.pisinSarja=this.sarjanPituus;
+            this.peliAktiivininen=false;
+            if(this.sarjanPituus<9)this.nextButton.setPosition(this.posX[5],this.posY[5]);
+            else
+            {
+                
+                if (this.kaanteinen==false)this.registry.set('pisinSpan',this.pisinSarja);
+                if (this.kaanteinen==true)this.registry.set('pisinBackwards',this.pisinSarja);
+                this.cameras.main.fadeOut(1000,20,20,20);
+                if (this.kaanteinen==true)this.time.delayedCall(1000,()=>{
+                this.scene.start('LoppuScene');});
+                else this.time.delayedCall(1000,()=>{
+                this.scene.start('siirtymaScene');});
+            }
+            this.sarjanPituus++;
+            this.sarjanPituusText.setText(this.sarjanPituus);
+            this.selitysTeksti.setText('Valitsit oikein.');
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#0000FF' });
+        }
+    }
+
+    //harjoittelun kasittely
+    clickHandlerPractice(pointer,box)
+    {
+        let nimi=box.name;
+        if (nimi==111) //painettu harjoittelu nappia
+        {
+            this.c=0;
+            this.pelaajanIndeksi=0;
+            this.pelaajanElamat=2;
+            this.sarjanPituus=2;
+            this.pisinSarja=3;
+            this.sarja=this.generateSpan(this.sarjanPituus);
+            this.startButton.setPosition(-340,-340);
+            this.nextButton.setPosition(-340,-340);
+            this.harjoitteluButton.setPosition(-340,-340);
+            this.showSignal2();
+            this.selitysTeksti.setText('Muista sarja.');
+            this.kaikkiValittuOikein=true;
+            this.peliAktiivininen=true;
+            this.oikeinKuva.setPosition(-340,-340);
+            this.vaarinKuva.setPosition(-340,-340);
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#000000' });
+            return;
+        }
+		
+        if (nimi==112) //painettu harjoittelu2 nappia
+        {
+            this.c=0;
+            this.pelaajanIndeksi=0;
+            this.sarja=this.generateSpan(this.sarjanPituus);
+            this.startButton.setPosition(-340,-340);
+            this.nextButton.setPosition(-340,-340);
+            this.harjoitteluButton2.setPosition(-340,-340);
+            this.showSignal2();
+            this.selitysTeksti.setText('Muista sarja.');
+            this.kaikkiValittuOikein=true;
+            this.peliAktiivininen=true;
+            this.oikeinKuva.setPosition(-340,-340);
+            this.vaarinKuva.setPosition(-340,-340);
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#000000' });
+            return;
+        }
+        
+        if (this.peliAktiivininen==false)return;//jos kierros on kesken estetaan numeroiden valitsemeninen
+        if (this.isLoading==true)return; //jos numeroiden nayttaminen viela kesken palataan takaisin
+
+
+        if (this.muistettavaSarja[this.pelaajanIndeksi]==nimi)
+        {
+            this.oikeinKuva.setPosition(this.posX[nimi],this.posY[nimi]);
+            this.vaarinKuva.setPosition(-340,-340);
+        }
+        else
+        {
+            this.kaikkiValittuOikein=false;
+            this.peliAktiivininen=false;
+            this.vaarinKuva.setPosition(this.posX[nimi],this.posY[nimi]);
+            this.oikeinKuva.setPosition(-340,-340);
+            if(this.kaanteinen==true)this.selitysTeksti.setText('Muista käänteinen järjestys! Aloita uusi\nharjoitus painamalla harjoittele-näppäintä.');
+            else this.selitysTeksti.setText('Ops! Painoit väärää ruutua. Aloita uusi harjoitus\npainamalla harjoittele-näppäintä.');
+            this.harjoitteluButton.setPosition(this.posX[5],this.posY[5]);
+            this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#FF0000' });
+        }
+        this.pelaajanIndeksi++;
+		
+        if (this.kaikkiValittuOikein===true && this.pelaajanIndeksi==this.sarjanPituus)
+        {
+            this.pelaajanElamat--;
+            this.sarjanPituus=3;
+            this.sarjanPituusText.setText(this.sarjanPituus);
+            this.peliAktiivininen=false;
+            if (this.pelaajanElamat==0)
+            {
+                this.startButton.setPosition(this.posX[5],this.posY[5]);
+                this.selitysTeksti.setText('Toistit sarjan oikein. Aloita varsinainen tehtävä\npainamalla seuraava-näppäintä.');
+                this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#0000FF' });
+                this.harjoittelu=false;
+            }
+            else
+            {
+                this.harjoitteluButton2.setPosition(this.posX[5],this.posY[5]);
+                this.selitysTeksti.setText('Toistit sarjan oikein. Aloita uusi harjoitus\npainamalla harjoittele-näppäintä.');
+                this.selitysTeksti.setStyle({ font: '24px Arial', fill: '#0000FF' });     
+            }
+        }
+    }
+
+    showSignal2()
+    {
+        this.isLoading=true;
+        for (let i=0;i<this.sarja.length;i++)
+        {
+            this.c++;
+            setTimeout(()=>
+            {
+                this.kuva.setPosition(this.posX[this.sarja[i]],this.posY[this.sarja[i]]);
+                if (i==this.sarja.length-1)this.kuva.setTint(0xff0000);
+            },1000+i*1500);
+            setTimeout(()=>
+            {
+                this.kuva.setPosition(-340,-340);
+                if (i==this.sarja.length-1)
+                {
+                    if (this.kaanteinen==false)this.selitysTeksti.setText('Toista sarja.');
+                    if (this.kaanteinen==true)this.selitysTeksti.setText('Toista sarja käänteisessä järjestyksessä.');
+                    this.kuva.setTint(0x000000);
+                    this.isLoading=false;
+                }
+            },2000+i*1500);
+        }
+    }
+
+    sarjatoString()
+    {
+        let string='';
+        for (let i=0;i<this.sarja.length;i++)
+        {
+            string=string+this.sarja[i];
+        }
+        return string;
+    }
+
+    generateSpan(pituus)
+    {
+        if (pituus<2)
+        {
+            pituus=2;
+            this.sarjanPituus=2;
+        }
+        let sarja =[];
+
+        let tmp;
+        let count=0;
+        sarja.push(Phaser.Math.Between(1,9));
+
+        for (let i=1;i<pituus;i++)
+        {
+            tmp=Phaser.Math.Between(1,9);
+            count++;
+            while (sarja[i-1]-tmp<2 && tmp-sarja[i-1]<2)
+            {
+                tmp=Phaser.Math.Between(1,9);
+                count++;
+            }
+            sarja.push(tmp);
+        }
+    this.muistettavaSarja=[];
+
+    if (this.kaanteinen==true)
+    {
+        for (let j=pituus-1;-1<j;j--)
+        this.muistettavaSarja.push(sarja[j]);        
+    }
+    else this.muistettavaSarja=sarja;
+    return sarja;
+    }
+}
+
+
+class SceneLoppu extends Phaser.Scene
+{
+    constructor()
+    {
+        super({key: 'LoppuScene'});
+    }
+
+    create()
+    {
+        this.add.text(10,20,'Tuloksesi ovat:',{font: '32px Arial', fill: '#000000'});
+        this.add.text(10,60,'Lohko tehtävä: '+this.registry.get('pisinSpan'),{font: '32px Arial', fill: '#0000FF'});
+        this.add.text(10,100,'Lohko tehtävä takaperin: '+this.registry.get('pisinBackwards'),{font: '32px Arial', fill: '#0000FF'});
+        this.add.text(10,400,'Testien keskiarvot',{font: '16px Arial', fill: '#000000'});
+		this.add.text(10,420,'Lohko tehtävä: 5.3',{font: '16px Arial', fill: '#000000'});
+		this.add.text(10,440,'Lohko tehtävä takaperin: 5.5',{font: '16px Arial', fill: '#000000'});
+        this.cameras.main.fadeIn(1000,20,20,20);
+		
+        this.add.text(20,200,'Kirjoita tuloksesi muistiin.',{font: '32px Arial', fill: '#FF0000'});
+    }
+}
+
+class SceneSiirtyma extends Phaser.Scene
+{
+    constructor()
+    {
+        super({key:'siirtymaScene'});
+    }
+
+    preload()
+    {
+        this.load.image('nextbutton','assets/nextbutton.png');
+        this.load.text('siirtymaOhjeet','assets/text/siirtymaOhjeetCorsi.txt');
+        this.cameras.main.fadeIn(1000,20,20,20);
+    }
+
+    create()
+    {
+        this.add.text(10,10,game.cache.text.get('siirtymaOhjeet'),{font: '26px Arial', fill: '#000000'});
+        this.add.image(390,450,'nextbutton').setInteractive();
+        this.input.on('gameobjectup', this.clickHandler2, this);
+        this.registry.set('kaanna',true);
+    }
+
+    clickHandler2(pointer,box)
+    {
+        this.cameras.main.fadeOut(1000,20,20,20);
+        this.time.delayedCall(1000,()=>{
+        this.scene.start('GameScene1');});
     }
 
 }
 
+class SceneAlku extends Phaser.Scene
+{
+    constructor()
+    {
+        super({key: 'AlkuScene'});
+        this.ohjeetText;
+    }
+
+    preload()
+    {
+        this.load.text('ohjeet','assets/text/ohjeetVWM.txt');
+        this.load.image('nextbutton','assets/nextbutton.png');
+    }
+
+    create()
+    {
+        let ohjeetText=this.add.text(30,10,game.cache.text.get('ohjeet'),{font: '26px Arial', fill: '#000000'});
+        this.add.image(390,500,'nextbutton').setInteractive();
+        this.input.on('gameobjectup', this.clickHandler2, this);
+        this.registry.set('kaanna',false);
+        this.cameras.main.fadeIn(1000,20,20,20);
+    }
+
+    clickHandler2(pointer,box)
+    {
+        this.cameras.main.fadeOut(1000,20,20,20);
+        this.time.delayedCall(1000,()=>{
+        this.scene.start('GameScene1');});
+    }
+}
+
+class SceneCalcs extends Phaser.Scene
+{
+    constructor()
+    {
+        super({key:'UIScene',active: true});
+        this.vaiheText;
+    }
+
+    create()
+    {
+        this.vaiheText=this.add.text(-340,-340,'Tehtävä alkaa.',{ font: '32px Arial', fill: '#000000' });
+        this.registry.set('vaihe',1);
+        this.registry.events.on('changedata',this.updateData,this);
+    }
+
+    updateData(parent,key,data)
+    {
+        if (key=='vaihe')
+        {
+            this.time.delayedCall(1000,()=>{this.vaiheText.setPosition(100,300);});
+            this.time.delayedCall(2000,()=>{this.vaiheText.setPosition(-340,-340);});
+        }
+    }
+}
+
 let config = {
 type: Phaser.AUTO,
+width: 800,
+height: 600,
+parent: 'phaser-example',
 backgroundColor: '#d3d3d3',
-scale: {
-    parent : 'test',
-    mode: Phaser.Scale.FIT,
-    width: 400,
-    height: 600,
-},
-scene: [  Scene1 ]
+scene: [ SceneAlku, Scene1, SceneLoppu, SceneSiirtyma, SceneCalcs ]
 };
 
 let game = new Phaser.Game(config);
-    </script></div></div>
-    <form name="testing basic" method="POST" data-netlify="true">
-        <p>
-            <label>Kerta: <input type="number" name="Kerta"/></label>
-        </p>
-        <p>
-            <label>Vastaajan tyyppi: <select name="role[]" multiple>
-                <option value="developer">Kehittäjä</option>            
-                <option value="tester">Testaaja</option>
-                <option value="victim">Uhri</option>
-        </select></label>
-    </p>
-        <label>Summa, näytössä: <input type="number" name="SummaScreen"></label>
-    </p>
-    <input id="output" name="summa" type="hidden"></div>
-    <p>
-        <label>klikkauksia, näytössä: <input type="number" name="ClicksScreen"></label>
-    </p>
-    <input id="salattu" name="clicks" type="hidden">
-  <p>
-    <button type="submit">Send</button>
-  </p>
-    </form>
-  </body>
+
+
+
+</script>
+
+</body>
 </html>
