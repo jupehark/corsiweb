@@ -1,0 +1,12 @@
+Tehtävän 1 toisessa osiossa tehtävänäsi on toistaa esineen
+näyttämä sarja käänteisessä järjestyksessä. Eli valitset
+viimeisenä näytetyn ruudun ensimmäisenä.
+
+Ennen varsinaisen tehtävän aloittamista sinun tulee läpäistä
+harjoitus kaksi kertaa. Harjoituksissa muistettavien sarjojen
+pituudet ovat 2 ja 3. Varsinaisessa tehtävässä muistettavan
+sarjan pituus kasvaa aina 1:llä, kun onnistut toistamaan sar-
+jan. Osio päättyy joko, kun olet tehnyt virheen 3 kertaa tai,
+kun saavutat maksimi tuloksen, jolloin sarjan pituus on 9.
+
+Aloita tehtävä painamalla Seuraava-näppäintä.

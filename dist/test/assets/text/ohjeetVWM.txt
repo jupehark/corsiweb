@@ -1,0 +1,14 @@
+Tehtävä 1 koostuu kahdesta osiosta. Ensimmäisessä osiossa
+musta esine näyttää sarjan liikkumalla ruudukossa. Ensimmäi-
+sessä osiossa tehtävänäsi on muistaa sarja, ja toistaa se
+samassa järjestyksessä painamalla ruutuja. Sarjan päättyessä
+esineen väri vaihtuu punaiseksi.
+
+Ennen varsinaisen tehtävän aloittamista sinun tulee läpäistä
+harjoitus kaksi kertaa. Harjoituksissa muistettavien sarjojen
+pituudet ovat 2 ja 3. Varsinaisessa tehtävässä muistettavan
+sarjan pituus kasvaa aina 1:llä, kun onnistut toistamaan sar-
+jan. Osio päättyy joko, kun olet tehnyt virheen 3 kertaa tai,
+kun saavutat maksimi tuloksen, jolloin sarjan pituus on 9.
+
+Aloita tehtävä painamalla Seuraava-näppäintä.
